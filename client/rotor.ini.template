@@ -1,0 +1,16 @@
+[System]
+hostname=example.com
+port=4343
+password=topSecret
+backgroundImage=rotor.png
+min=0
+max=360
+beamWidth=68
+beamSize=0.93
+beamBorder=#80000000
+beamBackground=#60008080
+showBeamCenterLine=true
+aimBorder=#80000000
+aimBackground=#60008080
+showAim=true
+statusInterval=300

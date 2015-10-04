@@ -1,0 +1,21 @@
+HW setup
+--------
+
+// Current Monitor
+#define CURRENT_GND  12
+#define CURRENT_VCC  13
+#define CURRENT_IN   0  /* 0 = A0 */
+
+// Rotor
+#define ROTOR_REED1   8
+#define ROTOR_REED2   9
+#define ROTOR_DIR    10
+#define ROTOR_ACTIVE 11
+
+// Set your own pins with these defines !
+#define DS1302_SCLK_PIN   4    // Arduino pin for the Serial Clock
+#define DS1302_IO_PIN     5    // Arduino pin for the Data I/O
+#define DS1302_CE_PIN     3    // Arduino pin for the Chip Enable
+#define DS1302_GND_PIN    6    // GND
+#define DS1302_VCC_PIN    7    // VCC
+

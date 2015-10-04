@@ -1,0 +1,4 @@
+client/Makefile
+client/armv7l
+client/x86_64
+client/rotor.ini
