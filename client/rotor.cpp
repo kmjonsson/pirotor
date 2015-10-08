@@ -32,6 +32,7 @@ Rotor::Rotor(QWidget *parent)
     connect(mmq, SIGNAL(authenticated()),this, SLOT(authenticated()));
     connect(mmq, SIGNAL(packet(QString,QJsonValue)),this, SLOT(packet(QString,QJsonValue)));
     connect(mmq, SIGNAL(disconnected()),this, SLOT(disconnected()));
+    connect(mmq, SIGNAL(error(qint64)),this, SLOT(error(qint64)));
 
     mmq->setKey(settings->value("System/password").toString());
     mmq->doConnect(
@@ -41,6 +42,11 @@ Rotor::Rotor(QWidget *parent)
 	// Load rotor Image
     rotorImg = QImage(settings->value("System/backgroundImage",QString("rotor.png")).toString());
     Q_ASSERT(!img.isNull());
+}
+
+void Rotor::error(qint64 id) {
+	qDebug() << "Failure on packet:" << id;
+    QCoreApplication::quit();
 }
 
 void Rotor::stopButtonPressed() {

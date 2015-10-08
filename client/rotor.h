@@ -35,6 +35,7 @@ public slots:
 	void packet(QString queue,QJsonValue data);
 	void disconnected();
 	void fetchStatus();
+	void error(qint64 id);
 
 	// Buttons :-)
 	void plus10ButtonPressed();
