@@ -1,0 +1,3 @@
+[submodule "MMQ"]
+	path = MMQ
+	url = https://github.com/kmjonsson/MMQ.git
