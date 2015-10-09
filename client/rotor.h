@@ -11,23 +11,24 @@
 #include <QSettings>
 #include <QMutex>
 #include "mmq.h"
+#include "rotorbuttons.h"
 
 class Rotor : public QWidget
 {
     Q_OBJECT
 
 public:
-    Rotor(QWidget *parent = 0);
+    Rotor(QSettings *settings, RotorButtons *buttons, QWidget *parent = 0);
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent ( QMouseEvent * event );
-	 void aimAntenna(int aim);
 	 MMQ *mmq;
 	 QMutex mutex;
 	 QSettings *settings;
     int dir,aim;
     QImage rotorImg;
+	 RotorButtons *buttons;
 
 public slots:
 	void connected();
@@ -38,11 +39,12 @@ public slots:
 	void error(qint64 id);
 
 	// Buttons :-)
-	void plus10ButtonPressed();
-	void sub10ButtonPressed();
-	void stopButtonPressed();
+	void goAntenna(int deg);
+	void aimAntenna(int deg);
+	void stopAntenna();
 
 private:
+	void initRotor();
 };
 
 #endif

@@ -6,26 +6,38 @@
 #ifndef ROTORBUTTONS_H
 #define ROTORBUTTONS_H
 
+#include <QMap>
 #include <QWidget>
 #include <QPushButton>
+#include <QSettings>
 
-#include "rotor.h"
+
+class Action {
+public:
+	enum Actions { STOP, GO, GOTO, QUIT };
+	Actions action;
+	int deg;
+};
 
 class RotorButtons : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit RotorButtons(Rotor *rotor, QWidget *parent = 0);
+    explicit RotorButtons(QSettings *settings, QWidget *parent = 0);
 
 protected:
 
 public slots:
+	void buttonPressed();
+
+signals:
+	void goButtonPressed(int deg);
+	void gotoButtonPressed(int deg);
+	void stopButtonPressed();
 
 private:
-	QPushButton *plus10Button;
-	QPushButton *sub10Button;
-	QPushButton *stopButton;
+	QMap<QObject *, Action *> buttons;
 };
 
 #endif

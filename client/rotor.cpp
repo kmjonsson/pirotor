@@ -10,21 +10,24 @@
 
 #include <QMouseEvent>
 
-Rotor::Rotor(QWidget *parent)
+Rotor::Rotor(QSettings *settings, RotorButtons *buttons,QWidget *parent)
     : QWidget(parent)
 {
-	settings = new QSettings( QString("rotor.ini"), QSettings::IniFormat );
+	this->settings = settings;
+	this->buttons = buttons;
 
 	// Update timer
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(fetchStatus()));
     timer->start(1000*settings->value("System/statusInterval",300).toInt());
 
-    setWindowTitle(tr("Rotor"));
-    resize(800, 480);
-
     dir = -1;
     aim = -1;
+
+	// Buttons init
+	connect(buttons,SIGNAL(goButtonPressed(int)),this,SLOT(goAntenna(int)));
+	connect(buttons,SIGNAL(gotoButtonPressed(int)),this,SLOT(aimAntenna(int)));
+	connect(buttons,SIGNAL(stopButtonPressed()),this,SLOT(stopAntenna()));
 
 	// MMQ Init
     mmq = new MMQ(this);
@@ -49,31 +52,17 @@ void Rotor::error(qint64 id) {
     QCoreApplication::quit();
 }
 
-void Rotor::stopButtonPressed() {
+void Rotor::stopAntenna() {
 	mmq->send(QString("stop"),QJsonValue(QString("stop")));
 }
 
-void Rotor::plus10ButtonPressed() {
+void Rotor::goAntenna(int deg) {
 	mutex.lock();
 	int a = aim;
 	mutex.unlock();
-	if(a < settings->value("System/max",360).toInt()-10) {
-		a += 10;
-		a /= 10;
-		a *= 10;
-		a %= 360;
-		aimAntenna(a);
-	}
-}
-
-void Rotor::sub10ButtonPressed() {
-	mutex.lock();
-	int a = aim;
-	mutex.unlock();
-	if(a > settings->value("System/min",0).toInt()+10) {
-		a -= 10;
-		a /= 10;
-		a *= 10;
+	if(a < settings->value("System/max",360).toInt()-deg
+	   && a > settings->value("System/min",0).toInt()+deg) {
+		a += deg;
 		a %= 360;
 		aimAntenna(a);
 	}
